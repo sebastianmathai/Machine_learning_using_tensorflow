@@ -1,0 +1,16 @@
+#At training time:
+for each batch, compute the mean MU and the standard deviation SIGMA. This is done per channel, and accross all rows and all columns of all images of the batch.
+
+keep an exponential moving average of MU (say MÛ) and of SIGMA (say SIĜMA) accross all batches
+
+use MÛ and SIĜMA to normalize pixels: normalized_pixel = ((input_pixel - MÛ) / sqrt(SIĜMA))
+
+a hyper-parameter epsilon is added to SIĜMA to prevent division by zero if SIĜMA becomes null at one point during training: normalized_pixel = ((input_pixel - MÛ) / sqrt(SIĜMA + epsilon))
+
+use a scale parameter GAMMA and an offset parameter BETA to re-scale normalized pixel: output_pixel = ((GAMMA x normalized_pixel) + BETA)
+
+GAMMA and BETA are trainable parameters, they are optimized during training
+
+#At inference time:
+MÛ and SIĜMA are now fixed parameters, just like GAMMA and BETA
+Same computations apply
